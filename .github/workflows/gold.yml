@@ -1,0 +1,34 @@
+name: Cập nhật giá vàng
+
+on:
+  schedule:
+    # Mỗi 30 phút từ 08:00 đến 21:30 giờ Việt Nam (UTC+7)
+    - cron: '*/30 1-14 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: gold
+  cancel-in-progress: false
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: node scripts/fetch-gold.mjs
+      - name: Lưu nếu có thay đổi
+        run: |
+          if [ -n "$(git status --porcelain gold.json)" ]; then
+            git config user.name "gold-bot"
+            git config user.email "gold-bot@users.noreply.github.com"
+            git add gold.json
+            git commit -m "Cập nhật giá vàng"
+            git push
+          fi
