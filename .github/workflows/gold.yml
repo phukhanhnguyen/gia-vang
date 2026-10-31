@@ -1,4 +1,4 @@
-name: Cập nhật giá vàng
+name: Cập nhật giá vàng và tỷ giá
 
 on:
   schedule:
@@ -22,13 +22,19 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - run: node scripts/fetch-gold.mjs
+      # Mỗi nguồn chạy độc lập: một nguồn lỗi thì nguồn kia vẫn cập nhật
+      - name: Giá vàng (PNJ)
+        run: node scripts/fetch-gold.mjs
+        continue-on-error: true
+      - name: Tỷ giá (Vietcombank)
+        run: node scripts/fetch-fx.mjs
+        continue-on-error: true
       - name: Lưu nếu có thay đổi
         run: |
-          if [ -n "$(git status --porcelain gold.json)" ]; then
+          if [ -n "$(git status --porcelain gold.json fx.json)" ]; then
             git config user.name "gold-bot"
             git config user.email "gold-bot@users.noreply.github.com"
-            git add gold.json
-            git commit -m "Cập nhật giá vàng"
+            git add gold.json fx.json
+            git commit -m "Cập nhật giá vàng và tỷ giá"
             git push
           fi
