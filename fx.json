@@ -1,0 +1,16 @@
+{
+  "checkedAt": "2026-10-31T12:24:23.953Z",
+  "source": "Vietcombank",
+  "sourceUpdated": "31/10/2026 19:13:19",
+  "unit": "đồng / 1 đơn vị, giá mua vào",
+  "rates": {
+    "AUD": 17678,
+    "CAD": 18009.62,
+    "EUR": 28141.01,
+    "GBP": 33752.11,
+    "JPY": 157.92,
+    "KRW": 16.71,
+    "SGD": 19668.24,
+    "USD": 25580
+  }
+}
