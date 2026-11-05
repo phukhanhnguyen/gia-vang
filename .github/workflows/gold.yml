@@ -2,8 +2,9 @@ name: Cập nhật giá vàng và tỷ giá
 
 on:
   schedule:
-    # Mỗi 30 phút từ 08:00 đến 21:30 giờ Việt Nam (UTC+7)
-    - cron: '*/30 1-14 * * *'
+    # Phút 17 và 47 mỗi giờ, từ 07:17 đến 22:47 giờ Việt Nam (UTC+7).
+    # Tránh phút :00 và :30: GitHub hay bỏ hoặc trễ lượt chạy hẹn giờ vào các phút đông người dùng.
+    - cron: '17,47 0-15 * * *'
   workflow_dispatch:
 
 permissions:
